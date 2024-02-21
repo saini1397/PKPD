@@ -7,7 +7,8 @@ library(htmlwidgets)
 library(expss)
 library(purrr)
 library(DT)
-library(tidyverse)
+library(dplyr)
+library(foreign)
 library(sqldf)
 library(leaflet)
 library(shinydashboard)
@@ -23,4 +24,4 @@ library(shiny)
 
 # Get the data
 
-occ<-1
+source("data-raw/read_xpt.R")
