@@ -69,7 +69,7 @@ server <- (function(input, output, session) {
 
     updateSelectInput(session, "time1",
       choices = c(names(x1())),
-      selected = c(names(x1()))[10]
+      selected = c(names(x1()))[186]
     )
 
 
@@ -131,7 +131,7 @@ server <- (function(input, output, session) {
 
     x1() %>%
       group_by(SUBJID, TRT01AN, TRT01A, .data[[input$param1]], ADY) %>%
-      summarise(mean = mean(AVAL)) %>%
+      summarise(mean = round(mean(AVAL),2)) %>%
       arrange(TRT01AN, TRT01A, .data[[input$param1]]) %>%
       select(SUBJID, TRT01A, .data[[input$param1]], mean, ADY)
   })
@@ -158,7 +158,8 @@ server <- (function(input, output, session) {
         ) %>%
         hc_xAxis(title = list(text = "Time (Days)")) %>%
         hc_yAxis(title = list(text = "Concentration")) %>%
-        hc_title(text = "Time Series Plot")
+        hc_title(text = "Time Series Plot") %>% 
+        hc_size(height= 500) 
     })
   })
 })

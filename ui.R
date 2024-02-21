@@ -24,7 +24,7 @@ ui <- dashboardPage(
         bsButton(
           inputId = "reset",
           label = "",
-          icon = icon("home"),
+          icon = icon("pagelines"),
           style = "danger"
         )
       ),
@@ -32,7 +32,7 @@ ui <- dashboardPage(
       menuItem(
         "PK/PD Dataset",
         tabName = "PK/PD Dataset",
-        icon = icon("tencent-weibo"),
+        icon = icon("filter"),
         div(
           selectInput(
             inputId = "s1", label = "",
@@ -45,25 +45,12 @@ ui <- dashboardPage(
       menuItem(
         "Select Population ",
         tabName = "Select Pipulation",
-        icon = icon("filter"),
+        icon = icon("soundcloud"),
         div(
           selectInput(
             inputId = "s2", label = "",
-            choices = c("SAFFL", "ITTFL", "EFFFL"),
-            selected = c("SAFFL"),
-            multiple = FALSE
-          )
-        )
-      ),
-      menuItem(
-        "Select Treatment Variable",
-        tabName = "Select Treatment Variable",
-        icon = icon("discord"),
-        div(
-          selectInput(
-            inputId = "s3", label = "",
-            choices = c("TRT01P", "TRT01A"),
-            selected = c("TR01A"),
+            choices = c("PKFL", "SAFFL", "ITTFL", "EFFFL"),
+            selected = c("PKFL"),
             multiple = FALSE
           )
         )
@@ -82,102 +69,102 @@ ui <- dashboardPage(
       div(
         column(
           width = 12,
-    tabBox(
-      width = NULL,
-      height = 800,
-      tabPanel(
-        useShinyjs(),
-        title = "PK/PD Listing",
-        div(
-          div(column(
-            width = 4,
-            shinyWidgets::pickerInput(
-              inputId = "colselect", label = "Select Columns:",
-              choices = c("Scientific Name", "Country", "Coordinates"),
-              multiple = TRUE,
-              selected = NULL,
-              options = shinyWidgets::pickerOptions(
-                actionsBox = TRUE,
-                title = "Select Columns to Display",
-              ), width = "100%"
-            )
-          )), br(), br(), br(),
-          div(
-            withSpinner(
-              dataTableOutput("data_table"),
-              type = 4,
-              color = "#2E8B57",
-              size = 0.7
-            )
-          )
-        )
-      ),tabPanel(
-        useShinyjs(),
-        title = "PK/PD Table",
-        div(
-          div(column(
-            width = 4,
-            selectInput(
-              inputId = "param1", label = "Select Parameter:",
-              choices = c("AVAL","AVALC"),
-              multiple = FALSE,
-              selected = "AVAL"
-            )
-          )), 
-          div(column(
-            width = 4,
-            selectInput(
-              inputId = "visit1", label = "Select Visit:",
-              choices = c("AVAL","AVALC"),
-              multiple = FALSE,
-              selected = "AVAL"
-            )
-          )),
-          div(column(
-            width = 4,
-            selectInput(
-              inputId = "time1", label = "Select Timepoint:",
-              choices = c("NULL"),
-              multiple = FALSE,
-              selected = "NULL"
-            )
-          )), 
-          
-          div(
-            withSpinner(
-              dataTableOutput("data_table2"),
-              type = 4,
-              color = "#2E8B57",
-              size = 0.7
-            )
-          )
-        )
-      ),
-      tabPanel(
-        useShinyjs(),
-        title = "PK/PD Figure",
-        div(
-          div(column(
-            width = 4,
-            selectInput(
-              inputId = "param2", label = "Select Parameter variable:",
-              choices = "PARAMCD",
-              multiple = FALSE,
-              selected = "PARAMCD"
-            )
-          )), 
-         
-          div(
-            withSpinner(
-              highchartOutput("chart2"),
-              type = 4,
-              color = "#2E8B57",
-              size = 0.7
+          tabBox(
+            width = NULL,
+            height = 800,
+            tabPanel(
+              useShinyjs(),
+              title = "PK/PD Listing",
+              div(
+                div(column(
+                  width = 4,
+                  shinyWidgets::pickerInput(
+                    inputId = "colselect", label = "Select Columns:",
+                    choices = c("Scientific Name", "Country", "Coordinates"),
+                    multiple = TRUE,
+                    selected = NULL,
+                    options = shinyWidgets::pickerOptions(
+                      actionsBox = TRUE,
+                      title = "Select Columns to Display",
+                    ), width = "100%"
+                  )
+                )), br(), br(), br(),
+                div(
+                  withSpinner(
+                    dataTableOutput("data_table"),
+                    type = 4,
+                    color = "#2E8B57",
+                    size = 0.7
+                  )
+                )
+              )
+            ), tabPanel(
+              useShinyjs(),
+              title = "PK/PD Table",
+              div(
+                div(column(
+                  width = 4,
+                  selectInput(
+                    inputId = "param1", label = "Select Parameter:",
+                    choices = c("AVAL", "AVALC"),
+                    multiple = FALSE,
+                    selected = "AVAL"
+                  )
+                )),
+                div(column(
+                  width = 4,
+                  selectInput(
+                    inputId = "visit1", label = "Select Visit:",
+                    choices = c("AVAL", "AVALC"),
+                    multiple = FALSE,
+                    selected = "AVAL"
+                  )
+                )),
+                div(column(
+                  width = 4,
+                  selectInput(
+                    inputId = "time1", label = "Select Timepoint:",
+                    choices = c("NULL"),
+                    multiple = FALSE,
+                    selected = "NULL"
+                  )
+                )),
+                div(
+                  withSpinner(
+                    dataTableOutput("data_table2"),
+                    type = 4,
+                    color = "#2E8B57",
+                    size = 0.7
+                  )
+                )
+              )
+            ),
+            tabPanel(
+              useShinyjs(),
+              title = "PK/PD Figure",
+              div(
+                div(column(
+                  width = 4,
+                  selectInput(
+                    inputId = "param2", label = "Select Parameter variable:",
+                    choices = "PARAMCD",
+                    multiple = FALSE,
+                    selected = "PARAMCD"
+                  )
+                )),
+                div(
+                  withSpinner(
+                    highchartOutput("chart2"),
+                    type = 4,
+                    color = "#2E8B57",
+                    size = 0.7
+                  )
+                )
+              )
             )
           )
         )
       )
-    )))))
-    
+    ))
   )
 )
