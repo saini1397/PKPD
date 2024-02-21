@@ -13,6 +13,25 @@ server <- (function(input, output, session) {
   })
 
 
+  timepoint <- reactive({
+    
+    if (input$s1 == 'adpc' )
+      "ATPT"
+    
+    else if (input$s1  == 'adpp')
+      "APERIODC"
+    
+  })
+  
+  sdy <- reactive({
+    
+    if (input$s1 == 'adpc' )
+      "ADY"
+    
+    else if (input$s1  == 'adpp')
+      "PPSDY"
+    
+  })
 
   colvars <- reactive({
     if (length(names(x1())[names(x1()) %in% c("PARAMCD")]) != 0) {
@@ -69,7 +88,7 @@ server <- (function(input, output, session) {
 
     updateSelectInput(session, "time1",
       choices = c(names(x1())),
-      selected = c(names(x1()))[186]
+      selected = timepoint()
     )
 
 
@@ -130,10 +149,10 @@ server <- (function(input, output, session) {
 
 
     x1() %>%
-      group_by(SUBJID, TRT01AN, TRT01A, .data[[input$param1]], ADY) %>%
+      group_by(SUBJID, TRT01AN, TRT01A, .data[[input$param1]], .data[[sdy()]]) %>%
       summarise(mean = round(mean(AVAL),2)) %>%
       arrange(TRT01AN, TRT01A, .data[[input$param1]]) %>%
-      select(SUBJID, TRT01A, .data[[input$param1]], mean, ADY)
+      select(SUBJID, TRT01A, .data[[input$param1]], mean, .data[[sdy()]])
   })
 
   observeEvent(session, {
@@ -141,7 +160,7 @@ server <- (function(input, output, session) {
       fig() %>%
         mutate(mean = ifelse(is.na(mean), 1, mean)) %>%
         hchart(
-          "line", hcaes(x = ADY, y = mean, group = c(SUBJID))
+          "line", hcaes(x = .data[[sdy()]], y = mean, group = c(SUBJID))
         ) %>%
         hc_exporting(
           enabled = TRUE,
