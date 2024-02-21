@@ -13,7 +13,7 @@ avoid reimport of CSV.
 The PKPD Application is deployed to shinyapps.io. Link to Application is provided below.
 
 ``` r
-https://cdiscdata.shinyapps.io/PKPD/
+https://sainipkpd.shinyapps.io/PKPD/
 ```
 
 The PKPD Application package could be accessed locally by cloning the [GitHub repository](https://github.com/saini1397/PKPD
