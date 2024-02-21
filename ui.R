@@ -1,6 +1,6 @@
 ui <- dashboardPage(
   skin = "black",
-  title = "TLF",
+  title = "PKPD",
   dashboardHeader(
     title = span("PK/PD"),
     titleWidth = 300,
