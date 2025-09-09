@@ -160,9 +160,9 @@ ui <- dashboardPage(
                 div(column(
                   width = 3,
                   selectInput(
-                    inputId = "param2", label = "Select Parameter:",
+                    inputId = "param2", label = "Select Analyte:",
                     choices = c(""),
-                    multiple = TRUE
+                    multiple = FALSE
                   )
                 )),
                 div(column(

@@ -86,7 +86,7 @@ server <- (function(input, output, session) {
 
     updateSelectInput(session, "subj2",
       choices = unique(x1()$SUBJID),
-      selected = "1001015"
+      selected = c("1001015","1001017","1001018","1001006","1001009")
     )
 
     updateSelectInput(session, "visit1",
