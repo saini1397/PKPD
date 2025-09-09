@@ -1,6 +1,5 @@
-
 ui <- dashboardPage(
-  skin = "black",
+  skin = "purple",
   title = "PKPD",
   dashboardHeader(
     title = span("PK/PD"),
@@ -20,15 +19,15 @@ ui <- dashboardPage(
     width = 300,
     div(class = "inlay", style = "height:15px;width:100%;background-color:#ecf0f5"),
     sidebarMenu(
-      div(
-        id = "sidebar_button",
-        bsButton(
-          inputId = "reset",
-          label = "",
-          icon = icon("pagelines"),
-          style = "danger"
-        )
-      ),
+      # div(
+      #   id = "sidebar_button",
+      #   bsButton(
+      #     inputId = "reset",
+      #     label = "",
+      #     icon = icon("pagelines"),
+      #     style = "danger"
+      #   )
+      # ),
       div(class = "inlay", style = "height:15px;width:100%;background-color:#ecf0f5"),
       menuItem(
         "PK/PD Dataset",
@@ -77,19 +76,33 @@ ui <- dashboardPage(
               useShinyjs(),
               title = "PK/PD Listing",
               div(
-                div(column(
-                  width = 4,
-                  shinyWidgets::pickerInput(
-                    inputId = "colselect", label = "Select Columns:",
-                    choices = c("Scientific Name", "Country", "Coordinates"),
-                    multiple = TRUE,
-                    selected = NULL,
-                    options = shinyWidgets::pickerOptions(
-                      actionsBox = TRUE,
-                      title = "Select Columns to Display",
-                    ), width = "100%"
-                  )
-                )), br(), br(), br(),
+                div(
+                  column(
+                    width = 4,
+                    shinyWidgets::pickerInput(
+                      inputId = "colselect", label = "Select Columns:",
+                      choices = c(""),
+                      multiple = TRUE,
+                      selected = NULL,
+                      options = shinyWidgets::pickerOptions(
+                        actionsBox = TRUE,
+                        title = "Select Columns to Display",
+                      ), width = "100%"
+                    )
+                  ),
+                  column(width = 3, textInput(
+                    "text1",
+                    "Subset Data",
+                    placeholder = "e.g. PCTEST=='ANAL3' & PCREFID=='102'"
+                  )), br(), column(width = 1, actionButton(
+                    width = "250px",
+                    inputId = "saveFilterButton1",
+                    label = "Apply Subset & Generate Listing",
+                    icon = icon("area-chart"),
+                    size = "md",
+                    class = "btn-info"
+                  )),
+                ), br(), br(), br(),
                 div(
                   withSpinner(
                     dataTableOutput("data_table"),
@@ -109,7 +122,7 @@ ui <- dashboardPage(
                     inputId = "param1", label = "Select Parameter:",
                     choices = c("AVAL", "AVALC"),
                     multiple = FALSE,
-                    selected = "AVAL"
+                    selected = "PCTEST"
                   )
                 )),
                 div(column(
@@ -129,7 +142,7 @@ ui <- dashboardPage(
                     multiple = FALSE,
                     selected = "NULL"
                   )
-                )),
+                )),br(),
                 div(
                   withSpinner(
                     dataTableOutput("data_table2"),
@@ -146,16 +159,22 @@ ui <- dashboardPage(
               div(
                 div(column(
                   width = 4,
-                  selectInput(
-                    inputId = "param2", label = "Select Parameter variable:",
-                    choices = "PARAMCD",
-                    multiple = FALSE,
-                    selected = "PARAMCD"
+                  textInput(
+                    "text3",
+                    "Subset Data",
+                    placeholder = "e.g. PCTEST=='ANAL3'"
                   )
-                )),
+                ), br(),div(width = 1, actionButton(
+                  width = "250px",
+                  inputId = "saveFilterButton3",
+                  label = "Apply Subset & Generate Figure",
+                  icon = icon("area-chart"),
+                  size = "md",
+                  class = "btn-info"
+                ))),
                 div(
                   withSpinner(
-                    highchartOutput("chart2"),
+                    highchartOutput("chart2",height='750px'),
                     type = 4,
                     color = "#2E8B57",
                     size = 0.7
