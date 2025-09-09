@@ -20,6 +20,14 @@ server <- (function(input, output, session) {
       "APERIODC"
     }
   })
+  
+  paramcdd <- reactive({
+    if (input$s1 == "adpc") {
+      "PCTEST"
+    } else if (input$s1 == "adpp") {
+      "PARAM"
+    }
+  })  
 
 
   colvars <- reactive({
@@ -76,7 +84,7 @@ server <- (function(input, output, session) {
   observe({
     updateSelectInput(session, "param1",
       choices = c(names(x1())),
-      selected = "PCTEST"
+      selected =paramcdd()
     )
 
     updateSelectInput(session, "param2",

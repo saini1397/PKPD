@@ -120,16 +120,16 @@ ui <- dashboardPage(
                   width = 4,
                   selectInput(
                     inputId = "param1", label = "Group1 Variable: Select Parameter",
-                    choices = c("AVAL", "AVALC"),
+                    choices = c("PARAM"),
                     multiple = FALSE,
-                    selected = "PCTEST"
+                    selected = "PARAM"
                   )
                 )),
                 div(column(
                   width = 4,
                   selectInput(
                     inputId = "visit1", label = "Group2 Variable: Select Visit",
-                    choices = c("AVAL", "AVALC"),
+                    choices = c("VISITNUM"),
                     multiple = FALSE,
                     selected = "AVAL"
                   )
