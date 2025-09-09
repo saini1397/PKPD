@@ -208,7 +208,8 @@ server <- (function(input, output, session) {
         hc_xAxis(title = list(text = "Time (Hrs)")) %>%
         hc_yAxis(title = list(text = "Concentration (ng/mL)")) %>%
         hc_title(text = "Time Series Plot") %>% 
-        hc_size(height= 750) 
+        hc_size(height= 750) %>% 
+        hc_tooltip(formatter = JS("function(){return '<b>Subject: ' + this.series.name + '</b><br>Timepoint: ' + this.x + ' Hrs' + '<br>Conc: ' + this.y+ ' ng/mL';}"))
     }) 
   })
 })

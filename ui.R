@@ -92,7 +92,7 @@ ui <- dashboardPage(
                   ),
                   column(width = 3, textInput(
                     "text1",
-                    "Subset Data",
+                    "Subset Data (Optional)",
                     placeholder = "e.g. PCTEST=='ANAL3' & PCREFID=='102'"
                   )), br(), column(width = 1, actionButton(
                     width = "250px",
@@ -119,7 +119,7 @@ ui <- dashboardPage(
                 div(column(
                   width = 4,
                   selectInput(
-                    inputId = "param1", label = "Select Parameter:",
+                    inputId = "param1", label = "Group1 Variable: Select Parameter",
                     choices = c("AVAL", "AVALC"),
                     multiple = FALSE,
                     selected = "PCTEST"
@@ -128,7 +128,7 @@ ui <- dashboardPage(
                 div(column(
                   width = 4,
                   selectInput(
-                    inputId = "visit1", label = "Select Visit:",
+                    inputId = "visit1", label = "Group2 Variable: Select Visit",
                     choices = c("AVAL", "AVALC"),
                     multiple = FALSE,
                     selected = "AVAL"
@@ -137,7 +137,7 @@ ui <- dashboardPage(
                 div(column(
                   width = 4,
                   selectInput(
-                    inputId = "time1", label = "Select Timepoint:",
+                    inputId = "time1", label = "Group3 Variable: Select Timepoint",
                     choices = c("NULL"),
                     multiple = FALSE,
                     selected = "NULL"
@@ -155,7 +155,7 @@ ui <- dashboardPage(
             ),
             tabPanel(
               useShinyjs(),
-              title = "PK/PD Figure",
+              title = "PK Concentration Figure",
               div(
                 div(column(
                   width = 3,
