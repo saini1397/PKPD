@@ -14,24 +14,13 @@ server <- (function(input, output, session) {
 
 
   timepoint <- reactive({
-    
-    if (input$s1 == 'adpc' )
+    if (input$s1 == "adpc") {
       "ATPT"
-    
-    else if (input$s1  == 'adpp')
+    } else if (input$s1 == "adpp") {
       "APERIODC"
-    
+    }
   })
-  
-  sdy <- reactive({
-    
-    if (input$s1 == 'adpc' )
-      "EACTM"
-    
-    else if (input$s1  == 'adpp')
-      "PPSDY"
-    
-  })
+
 
   colvars <- reactive({
     if (length(names(x1())[names(x1()) %in% c("PARAMCD")]) != 0) {
@@ -40,12 +29,10 @@ server <- (function(input, output, session) {
       names(x1())[1:10]
     }
   })
-  
-  # Figure Purpose all filters
-  
 
+ 
   ################## Listing Purpose
-  # To update drop down dynamically based on platform selected
+  # To update drop down dynamically 
   observe({
     shinyWidgets::updatePickerInput(session, "colselect",
       choices = unique(names(x1())),
@@ -65,22 +52,23 @@ server <- (function(input, output, session) {
   observeEvent(input$colselect, {
     # Output Table
     output$data_table <- renderDataTable({
-      
       expre <- parse(text = input$text1)
-      
-      if(input$text1 != ''){
-        x1()  %>% 
+
+      if (input$text1 != "") {
+        x1() %>%
           filter(eval(expre))
       } else {
-        x1()
-      } %>% 
-        select(one_of(input$colselect)) %>%
-        datatable(filter = "top", extensions = "Buttons", options = list(
-          scrollX = TRUE,
-          pageLength = 25, autoWidth = FALSE,
-          dom = "Bfrtip",
-          buttons = c("copy", "csv", "excel", "pdf")
-        ))
+        {
+          x1()
+        } %>%
+          select(one_of(input$colselect)) %>%
+          datatable(filter = "top", extensions = "Buttons", options = list(
+            scrollX = TRUE,
+            pageLength = 25, autoWidth = FALSE,
+            dom = "Bfrtip",
+            buttons = c("copy", "csv", "excel", "pdf")
+          ))
+      }
     }) %>% bindEvent(input$saveFilterButton1)
   })
 
@@ -90,15 +78,15 @@ server <- (function(input, output, session) {
       choices = c(names(x1())),
       selected = "PCTEST"
     )
-    
+
     updateSelectInput(session, "param2",
-                      choices = unique(x1()$PCTEST),
-                      selected = "ANAL1"
+      choices = unique(x1()$PCTEST),
+      selected = "ANAL1"
     )
-    
+
     updateSelectInput(session, "subj2",
-                      choices = unique(x1()$SUBJID),
-                      selected = "1001015"
+      choices = unique(x1()$SUBJID),
+      selected = "1001015"
     )
 
     updateSelectInput(session, "visit1",
@@ -116,13 +104,10 @@ server <- (function(input, output, session) {
       choices = c(names(x1())),
       selected = "VISITNUM"
     )
-    
-    # updateTextInput(session, "text3"
-    # )
-    
+
     updateTextInput(
       session = getDefaultReactiveDomain(),
-      inputId='text3',
+      inputId = "text3",
       label = NULL,
       value = NULL,
       placeholder = NULL
@@ -168,27 +153,27 @@ server <- (function(input, output, session) {
     })
   })
 
-  
-  
+
+
   # Figure part
-  
+
   fig <- reactive({
     req(x1())
-    x1() %>% 
-      filter (PCTEST %in% (input$param2) & SUBJID %in% (input$subj2)) %>% 
-      mutate(ARRLT=(ADTM-TRTSDTM)/3600) %>% 
-      mutate(ARRLT=round(ARRLT,digits=2)) %>% 
-      mutate(ARRLT=if_else(ARRLT < 0 ,0,ARRLT)) %>% 
-      arrange(PCTESTCD,SUBJID,ARRLT,AVAL)
+    x1() %>%
+      filter(PCTEST %in% (input$param2) & SUBJID %in% (input$subj2)) %>%
+      mutate(ARRLT = (ADTM - TRTSDTM) / 3600) %>%
+      mutate(ARRLT = round(ARRLT, digits = 2)) %>%
+      mutate(ARRLT = if_else(ARRLT < 0, 0, ARRLT)) %>%
+      arrange(PCTESTCD, SUBJID, ARRLT, AVAL)
   })
-  
+
   observeEvent(session, {
     output$chart2 <- renderHighchart({
       fig() %>%
-        mutate(ARRLT=(ADTM-TRTSDTM)/3600) %>% 
-        mutate(ARRLT=round(ARRLT,digits=2)) %>% 
-        mutate(ARRLT=if_else(ARRLT < 0 ,0,ARRLT)) %>% 
-        arrange(PCTESTCD,SUBJID,ARRLT,AVAL) %>%
+        mutate(ARRLT = (ADTM - TRTSDTM) / 3600) %>%
+        mutate(ARRLT = round(ARRLT, digits = 2)) %>%
+        mutate(ARRLT = if_else(ARRLT < 0, 0, ARRLT)) %>%
+        arrange(PCTESTCD, SUBJID, ARRLT, AVAL) %>%
         hchart(
           "line", hcaes(x = ARRLT, y = AVAL, group = c(SUBJID))
         ) %>%
@@ -207,9 +192,9 @@ server <- (function(input, output, session) {
         ) %>%
         hc_xAxis(title = list(text = "Time (Hrs)")) %>%
         hc_yAxis(title = list(text = "Concentration (ng/mL)")) %>%
-        hc_title(text = "Time Series Plot") %>% 
-        hc_size(height= 750) %>% 
+        hc_title(text = "Time Series Plot") %>%
+        hc_size(height = 750) %>%
         hc_tooltip(formatter = JS("function(){return '<b>Subject: ' + this.series.name + '</b><br>Timepoint: ' + this.x + ' Hrs' + '<br>Conc: ' + this.y+ ' ng/mL';}"))
-    }) 
+    })
   })
 })
