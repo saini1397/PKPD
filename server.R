@@ -43,8 +43,6 @@ server <- (function(input, output, session) {
   
   # Figure Purpose all filters
   
-  
-
 
   ################## Listing Purpose
   # To update drop down dynamically based on platform selected
@@ -91,6 +89,16 @@ server <- (function(input, output, session) {
     updateSelectInput(session, "param1",
       choices = c(names(x1())),
       selected = "PCTEST"
+    )
+    
+    updateSelectInput(session, "param2",
+                      choices = unique(x1()$PCTEST),
+                      selected = "ANAL1"
+    )
+    
+    updateSelectInput(session, "subj2",
+                      choices = unique(x1()$SUBJID),
+                      selected = "1001015"
     )
 
     updateSelectInput(session, "visit1",
@@ -164,28 +172,19 @@ server <- (function(input, output, session) {
   
   # Figure part
   
-  # fig <- reactive({
-  #   req(x1())
-  #   x1() %>%
-  #     # filter (SUBJID== '1001001' & PCTEST=='ANAL1') %>% 
-  #     mutate(ARRLT=(ADTM-TRTSDTM)/3600) %>% 
-  #     mutate(ARRLT=round(ARRLT,digits=2)) %>% 
-  #     mutate(ARRLT=if_else(ARRLT < 0 ,0,ARRLT)) %>% 
-  #     arrange(PCTESTCD,SUBJID,ARRLT,AVAL)
-  # })
+  fig <- reactive({
+    req(x1())
+    x1() %>% 
+      filter (PCTEST %in% (input$param2) & SUBJID %in% (input$subj2)) %>% 
+      mutate(ARRLT=(ADTM-TRTSDTM)/3600) %>% 
+      mutate(ARRLT=round(ARRLT,digits=2)) %>% 
+      mutate(ARRLT=if_else(ARRLT < 0 ,0,ARRLT)) %>% 
+      arrange(PCTESTCD,SUBJID,ARRLT,AVAL)
+  })
   
-  observeEvent(input$saveFilterButton3, {
+  observeEvent(session, {
     output$chart2 <- renderHighchart({
-      # browser()
-      expre <- parse(text = input$text3)
-      
-      if(input$text3 != ''){
-        x1()  %>% 
-          filter(eval(expre))
-      } else {
-        x1()
-      } %>%
-        # filter (SUBJID== '1001001' & PCTEST=='ANAL1') %>% 
+      fig() %>%
         mutate(ARRLT=(ADTM-TRTSDTM)/3600) %>% 
         mutate(ARRLT=round(ARRLT,digits=2)) %>% 
         mutate(ARRLT=if_else(ARRLT < 0 ,0,ARRLT)) %>% 
@@ -210,6 +209,6 @@ server <- (function(input, output, session) {
         hc_yAxis(title = list(text = "Concentration (ng/mL)")) %>%
         hc_title(text = "Time Series Plot") %>% 
         hc_size(height= 750) 
-    })  %>% bindEvent(input$saveFilterButton3)
+    }) 
   })
 })

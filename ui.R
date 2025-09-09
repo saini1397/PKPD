@@ -158,20 +158,21 @@ ui <- dashboardPage(
               title = "PK/PD Figure",
               div(
                 div(column(
-                  width = 4,
-                  textInput(
-                    "text3",
-                    "Subset Data",
-                    placeholder = "e.g. PCTEST=='ANAL3'"
+                  width = 3,
+                  selectInput(
+                    inputId = "param2", label = "Select Parameter:",
+                    choices = c(""),
+                    multiple = TRUE
                   )
-                ), br(),div(width = 1, actionButton(
-                  width = "250px",
-                  inputId = "saveFilterButton3",
-                  label = "Apply Subset & Generate Figure",
-                  icon = icon("area-chart"),
-                  size = "md",
-                  class = "btn-info"
-                ))),
+                )),
+                div(column(
+                  width = 9,
+                  selectInput(
+                    inputId = "subj2", label = "Select Subjects:",
+                    choices = c(""),
+                    multiple = TRUE
+                  )
+                )),
                 div(
                   withSpinner(
                     highchartOutput("chart2",height='750px'),
